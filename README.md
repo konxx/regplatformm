@@ -133,6 +133,7 @@ docker-compose -f docker-compose.prod.yml up -d
 | `SSO_SECRET` | 否 | 空 | SSO 对接密钥（可选，用于外部系统集成） |
 | `REDIS_URL` | 否 | 空 | Redis 连接串（为空则使用内存缓存） |
 | `JWT_EXPIRE_HOURS` | 否 | `72` | JWT 过期时间（小时） |
+| `CORS_ORIGINS` | 否 | 空 | 允许的跨域来源（逗号分隔，如 `https://a.com,https://b.com`；开发模式下允许所有来源） |
 
 ### 管理后台系统设置（数据库持久化）
 
@@ -140,6 +141,7 @@ docker-compose -f docker-compose.prod.yml up -d
 
 | 配置项 | 说明 |
 |--------|------|
+| `yydsmail_base_url` | YYDS Mail 临时邮箱 API 地址（用于接收注册验证码） |
 | `gptmail_api_key` | GPTMail 邮箱服务 API Key |
 | `gptmail_base_url` | GPTMail 服务地址 |
 | `turnstile_solver_url` | Turnstile 验证码求解服务地址 |
@@ -158,6 +160,8 @@ docker-compose -f docker-compose.prod.yml up -d
 ### 注册 / 登录
 
 - 用户通过用户名和密码注册、登录
+- **密码要求**：至少 8 个字符，包含大写字母、小写字母和数字
+- **接口限流**：注册 3 次/分钟，登录 10 次/分钟（基于 IP）
 - JWT Token 认证，支持 Cookie / `X-Auth-Token` Header / `Authorization: Bearer` 三种传递方式
 - **管理员规则**：
   - 第一个注册的用户自动成为管理员（`Role=100, IsAdmin=true`）
@@ -173,10 +177,10 @@ docker-compose -f docker-compose.prod.yml up -d
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| POST | `/api/auth/register` | 用户注册 |
-| POST | `/api/auth/login` | 用户登录 |
+| POST | `/api/auth/register` | 用户注册（限流 3/min） |
+| POST | `/api/auth/login` | 用户登录（限流 10/min） |
 | GET | `/api/auth/sso` | SSO 登录（可选） |
-| GET | `/api/auth/dev-login` | 开发模式登录 |
+| GET | `/api/auth/dev-login` | 开发模式登录（仅 `DEV_MODE=true` 时可用） |
 
 ### 用户端点（需登录）
 
