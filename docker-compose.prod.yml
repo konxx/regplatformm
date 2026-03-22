@@ -22,7 +22,7 @@ services:
       retries: 5
 
   app:
-    image: ghcr.io/xiaolajiaoyyds/regplatformm:latest
+    image: ghcr.io/konxx/regplatformm:latest
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -54,7 +54,7 @@ services:
       - xray-config:/etc/xray:ro
 
   turnstile-solver:
-    image: ghcr.io/xiaolajiaoyyds/regplatformm-turnstile-solver:latest
+    image: ghcr.io/konxx/regplatformm-turnstile-solver:latest
     restart: unless-stopped
     ports:
       - "5072:5072"
@@ -64,13 +64,13 @@ services:
       SOLVER_PORT: "5072"
 
   cf-bypass-solver:
-    image: ghcr.io/xiaolajiaoyyds/regplatformm-cf-bypass-solver:latest
+    image: ghcr.io/konxx/regplatformm-cf-bypass-solver:latest
     restart: unless-stopped
     ports:
       - "5073:5073"
 
   openai-reg:
-    image: ghcr.io/xiaolajiaoyyds/regplatformm-openai-reg:latest
+    image: ghcr.io/konxx/regplatformm-openai-reg:latest
     restart: unless-stopped
     ports:
       - "5075:5075"
@@ -79,7 +79,7 @@ services:
       GPTMAIL_BASE_URL: "https://mail.chatgpt.org.uk"
 
   aws-builder-id-reg:
-    image: ghcr.io/xiaolajiaoyyds/regplatformm-aws-builder-id-reg:latest
+    image: ghcr.io/konxx/regplatformm-aws-builder-id-reg:latest
     restart: unless-stopped
     ports:
       - "5076:5076"
@@ -88,7 +88,7 @@ services:
     shm_size: '2gb'
 
   camoufox-reg:
-    image: ghcr.io/xiaolajiaoyyds/regplatformm-camoufox-reg:latest
+    image: ghcr.io/konxx/regplatformm-camoufox-reg:latest
     restart: unless-stopped
     ports:
       - "5074:5074"
